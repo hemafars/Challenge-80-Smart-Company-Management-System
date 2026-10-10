@@ -10,28 +10,167 @@
 </head>
 
 <body>
+  <h1 style="text-align: center;">Smart Company Management System</h1>
   <div class="container">
-    <h1 style="text-align: center;">Smart Company Management System</h1>
-    <form>
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">اسم الموظف</label>
-        <input type="email" class="form-control" id="Employee Name" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-      </div>
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <div class=" d-flex justify-content-center">
+      <form class="w-50 ">
+        <div class="mb-1">
+          <label for="exampleInputEmail1" class="form-label">اسم الموظف</label>
+          <input type="text" class="form-control" id="employeeName" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-1">
+          <label for="exampleInputEmail1" class="form-label">الراتب الأساسي</label>
+          <input type="number" class="form-control" id="basicsalary" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-1">
+          <label for="exampleInputEmail1" class="form-label">عدد ساعات العمل الإضافية</label>
+          <input type="number" class="form-control" id="numberOfOvertimeHours" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-1">
+          <label for="exampleInputEmail1" class="form-label">أجر الساعة الإضافية</label>
+          <input type="number" class="form-control" id="overTimeHourlyRate" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-1">
+          <label for="exampleInputEmail1" class="form-label">سنوات الخبرة</label>
+          <input type="number" class="form-control" id="yearsOfExperience" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-1">
+          <label for="exampleInputEmail1" class="form-label">القسم</label>
+          <input type="text" class="form-control" id="department" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-1">
+          <label for="exampleInputEmail1" class="form-label">هل الموظف مدير؟ </label>
+          <select name="" id="isManager">
+            <option value="">(Yes / No)</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <button id="submit" type="submit" class="btn btn-primary">submit</button>
+      </form>
+
+    </div>
+    <hr>
+    <div class=" view d-flex justify-content-center" id="view">
+
+    </div>
   </div>
-
-
   <!-- javascript fils -->
+  <script>
+    //اسم الموظف
+    const employeeName = document.getElementById("employeeName");
+    //الراتب الأساسي
+    const basicsalary = document.getElementById("basicsalary");
+    //ساعات العمل الإضافية
+    const numberOfOvertimeHours = document.getElementById("numberOfOvertimeHours");
+    //أجر الساعة الإضافية
+    const overTimeHourlyRate = document.getElementById("overTimeHourlyRate");
+    //سنوات الخبرة
+    const yearsOfExperience = document.getElementById("yearsOfExperience");
+    //القسم
+    const department = document.getElementById("department");
+    //هل الموظف مدير
+    const isManager = document.getElementById("isManager");
+    //زر الارسال
+    const submit = document.getElementById("submit");
+    //مكان العرض
+    const view = document.getElementById("view");
+    //دالة العمليات
+    submit.addEventListener("click", (e) => {
+      //منع التفاعل للفورم
+      e.preventDefault()
+      //شرط التحقق من ادخال اسم الموظف وتحويلة الي حروف صغيرة
+      if (employeeName.value.trim().toLowerCase() === "") {
+        console.log("ادخل اسم الموظف");
+        alert("ادخل اسم الموظف")
+        return;
+      }
+      console.log(`employeeName : ${employeeName.value}`);
+      //شرط التحقق من الارقام الراتب الاساسي
+      if (isNaN(basicsalary.value) || basicsalary.value < 0) {
+        console.log("ادخل قيمة الراتب الاساسي");
+        alert("ادخل قيمة الراتب الاساسي")
+        return;
+      }
+      const salary = Number(basicsalary.value)
+
+      console.log(`basicsalary : ${basicsalary.value}`);
+      //شرط التحقق من الارقام لسعات العمل الاضافية
+      if (isNaN(numberOfOvertimeHours.value) || numberOfOvertimeHours.value < 0) {
+        console.log("ادخل ساعات العمل الإضافية");
+        alert("ادخل ساعات العمل الإضافية")
+        return;
+      }
+      console.log(`numberOfOvertimeHours : ${numberOfOvertimeHours.value}`);
+      const OvertimeHours = Number(numberOfOvertimeHours.value)
+      console.log("تمام");
+      //قيمة العمل الإضافي
+      let overtimepay = OvertimeHours * overTimeHourlyRate.value;
+
+      //الراتب قبل الزيادات
+      let salaryBeforeIncreases = Number(basicsalary.value);
+      //زيادة
+      let more = 0;
+      //بدل إدارة
+      let administrativeAllowance = 0;
+      //الضريبة
+      let tax = 0;
+      //الراتب النهائي
+      let finalsalary = 0;
+
+      if (yearsOfExperience.value >= 10) {
+        more = Number(salaryBeforeIncreases * 0.20)
+      } else if (yearsOfExperience.value >= 5) {
+        more = Number(salaryBeforeIncreases * 0.10)
+      }
+      if (isManager.value === "Yes") {
+        administrativeAllowance = 5000
+      }
+
+
+      finalsalary = overtimepay + salaryBeforeIncreases + more + administrativeAllowance
+      if (finalsalary > 50000) {
+        tax = finalsalary * 0.08
+      }
+      let finalsalaryaftertex = finalsalary - tax
+      console.log(`قيمة العمل الإضافي - overtimepay : ${overtimepay}`);
+      console.log(`الراتب قبل الزيادات - salaryBeforeIncreases : ${salaryBeforeIncreases}`);
+      console.log(`زيادة - more : ${more}`);
+      console.log(`بدل إدارة - administrativeAllowance : ${administrativeAllowance}`);
+      console.log(`الضريبة - tax : ${tax}`);
+      console.log(`الراتب النهائي - finalsalary : ${finalsalary}`);
+      view.innerHTML = `<table class="table w-50">
+        <tr>
+          <th>قيمة العمل الإضافي</th>
+          <td>${overtimepay} جنية</td>
+        </tr>
+        <tr>
+          <th>الراتب قبل الزيادات</th>
+          <td>${salaryBeforeIncreases} جنية</td>
+        </tr>
+        <tr>
+          <th>زيادة </th>
+          <td>${more} جنية</td>
+        </tr>
+        <tr>
+          <th>بدل إدارة </th>
+          <td>${administrativeAllowance} جنية</td>
+        </tr>
+        <tr>
+          <th>ضريبة </th>
+          <td>${tax} جنية</td>
+        </tr>
+        <tr>
+          <th>الراتب النهائي </th>
+          <td>${finalsalaryaftertex} جنية</td>
+        </tr>
+      </table>
+`
+
+
+
+    })
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
